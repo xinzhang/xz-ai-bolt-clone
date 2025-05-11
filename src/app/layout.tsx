@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/theme-provider";
+import Provider from './provider';
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -16,12 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <Provider>
           <div className="min-h-screen bg-background text-foreground antialiased">
             <Header />
             {children}
           </div>
-        </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );

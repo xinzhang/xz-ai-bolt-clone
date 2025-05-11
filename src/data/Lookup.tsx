@@ -6,7 +6,7 @@ const Lookup = {
   SIGNIN_HEADING: 'Continue With Bolt.New 2.0',
   SIGNIN_SUBHEADING: 'To use Bolt you must log into an existing account',
   SIGNIN_AGREEMENT_TEXT: 'By using Bolt, you agree to the collection of data',
-  INPUT_PLACEHOLDER: 'Search for a project or technology',
+  INPUT_PLACEHOLDER: 'what do you want to build?',
   DEMO: {
     "projectTitle": "React ToDo App",
     "description": "A basic ToDo App in React with Tailwind CSS, styled-components",
