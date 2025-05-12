@@ -1,7 +1,9 @@
-import Provider from './provider';
+import Provider from "./provider";
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
+import { ConvexClient } from "convex/browser";
+import ConvexClientProvider from "./ConvexClientProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,14 +16,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body>
-        <Provider>
-          <div className="min-h-screen bg-background text-foreground antialiased">
-            <Header />
-            {children}
-          </div>
-        </Provider>
+        <ConvexClientProvider>
+          <Provider>
+            <div className='min-h-screen bg-background text-foreground antialiased'>
+              <Header />
+              {children}
+            </div>
+          </Provider>
+        </ConvexClientProvider>
       </body>
     </html>
   );

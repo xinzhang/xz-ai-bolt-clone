@@ -11,6 +11,9 @@ import { Button } from "@/components/ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { UserDetailContext } from "@/context/UserDetailContext";
+import { useMutation } from "convex/react";
+import { v4 as uuidv4 } from "uuid";
+import { api } from "../../convex/_generated/api";
 
 const SignInDialog = ({
   openDialog,
@@ -20,6 +23,7 @@ const SignInDialog = ({
   closeDialog: () => void;
 }) => {
   const { userDetail, setUserDetail } = React.useContext(UserDetailContext);
+  const createUser = useMutation(api.users.CreateUser);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -28,11 +32,19 @@ const SignInDialog = ({
         { headers: { Authorization: `Bearer ${tokenResponse?.access_token}` } }
       );
 
-      setUserDetail({
+      const user = await createUser({
         email: userInfo?.data?.email,
         name: userInfo?.data?.name,
         picture: userInfo?.data?.picture,
+        uid: uuidv4(),
       });
+      console.log("user", user);
+
+      if (typeof window !== undefined) {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
+      setUserDetail(user);
 
       closeDialog();
     },
@@ -44,21 +56,24 @@ const SignInDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle></DialogTitle>
-          <DialogDescription>
-            <div className='flex flex-col justify-center items-center'>
-              <h2 className='text-2xl font-bold text-center text-white'>
-                {Lookup.SIGNIN_HEADING}
-              </h2>
-              <p className='text-md mt-2 text-center'>
-                {Lookup.SIGNIN_SUBHEADING}
-              </p>
 
-              <Button onClick={googleLogin} className='mt-3 bg-blue-500 text-white hover:bg-blue-400'>
-                Sign In with Google
-              </Button>
-              <p className='mt-3'>{Lookup.SIGNIN_AGREEMENT_TEXT}</p>
-            </div>
-          </DialogDescription>
+          <div className='flex flex-col justify-center items-center'>
+            <h2 className='text-2xl font-bold text-center text-white'>
+              {Lookup.SIGNIN_HEADING}
+            </h2>
+
+            <p className='text-md mt-2 text-center'>
+              {Lookup.SIGNIN_SUBHEADING}
+            </p>
+
+            <Button
+              onClick={googleLogin}
+              className='mt-3 bg-blue-500 text-white hover:bg-blue-400'
+            >
+              Sign In with Google
+            </Button>
+            <p className='mt-3'>{Lookup.SIGNIN_AGREEMENT_TEXT}</p>
+          </div>
         </DialogHeader>
       </DialogContent>
     </Dialog>
