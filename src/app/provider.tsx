@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
-import { MessagesContext } from "@/context/MessagesContext";
+import { Message, MessagesContext } from "@/context/MessagesContext";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useConvex } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export function Provider({ children } : { children: React.ReactNode }) {
-  const [message, setMessage] = React.useState({ role: "", content: "" });
+  const [messages, setMessages] = React.useState<Message[]>([]);
   const [userDetail, setUserDetail] = React.useState({});
   const convex = useConvex();
 
@@ -27,6 +27,8 @@ export function Provider({ children } : { children: React.ReactNode }) {
         })
         console.log("result", result);
         setUserDetail(result);
+      } else {
+        setUserDetail(undefined);
       }
     }
   }
@@ -34,7 +36,7 @@ export function Provider({ children } : { children: React.ReactNode }) {
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
       <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-        <MessagesContext.Provider value={{ message, setMessage }}>
+        <MessagesContext.Provider value={{ messages, setMessages }}>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
             {children}
           </ThemeProvider>

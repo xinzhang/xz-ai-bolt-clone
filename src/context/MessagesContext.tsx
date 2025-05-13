@@ -10,14 +10,11 @@ export interface Message {
 
 // Define the shape of the context
 export interface MessagesContextType {
-  message: Message;
-  setMessage: React.Dispatch<React.SetStateAction<Message>>;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 export const MessagesContext = React.createContext<MessagesContextType>({
-  message: {
-    role: "",
-    content: "",
-  },
-  setMessage: () => {},
+  messages: [],
+  setMessages: () => {},
 });
