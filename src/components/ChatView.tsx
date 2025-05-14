@@ -10,6 +10,8 @@ import Colors from "@/data/Colors";
 import Image from "next/image";
 import Lookup from "@/data/Lookup";
 import { ArrowRight, Link } from "lucide-react";
+import axios from "axios";
+import Prompt from "@/data/Prompt";
 
 const ChatView = () => {
   const { id } = useParams();
@@ -24,12 +26,34 @@ const ChatView = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (messages?.length > 0) {
+      const role = messages[messages.length - 1].role;
+      if (role === "user") {
+        getAiResponse();
+      }
+    }
+  }, [messages]);
+
+
   const GetWorkspaceData = async () => {
     const result = await convex.query(api.workspace.GetWorkspace, {
       workspaceId: id,
     });
     setMessages(result?.messages);
   };
+
+  const getAiResponse = async () => {
+    const prompt = [...messages, {
+        role: "system",
+        content: Prompt.CHAT_PROMPT,
+      }];
+      
+    const result = await axios.post("/api/ai-chat", {
+      prompt: prompt,
+    });
+    console.log("AI Response:", result.data.result);
+  }
 
   return (
     <div className='relative h-[85vh] flex flex-col kk'>
