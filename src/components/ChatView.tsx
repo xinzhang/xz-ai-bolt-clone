@@ -12,9 +12,11 @@ import Lookup from "@/data/Lookup";
 import { ArrowRight, Link } from "lucide-react";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
+import { Id } from "../../convex/_generated/dataModel"; 
 
 const ChatView = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id as Id<"workspace">;
   const convex = useConvex();
   const { messages, setMessages } = useContext(MessagesContext);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
@@ -37,6 +39,8 @@ const ChatView = () => {
 
 
   const GetWorkspaceData = async () => {
+    if (!id) return; 
+
     const result = await convex.query(api.workspace.GetWorkspace, {
       workspaceId: id,
     });
@@ -55,6 +59,16 @@ const ChatView = () => {
     console.log("AI Response:", result.data.result);
   }
 
+  const onGenerate = async (input: string) => {
+    const msg = {
+      role: 'user',
+      content: input,
+    }
+
+    setMessages([msg])
+    getAiResponse();    
+  }
+
   return (
     <div className='relative h-[85vh] flex flex-col kk'>
       <div className="flex-1 overflow-y-scroll px-5 py-2">
@@ -68,7 +82,7 @@ const ChatView = () => {
           >
             {message?.role === "user" && (
               <Image
-                src={userDetail?.picture}
+                src={userDetail?.picture || "/logo.png"}
                 alt='userImage'
                 width={32}
                 height={32}

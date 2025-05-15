@@ -2,7 +2,6 @@ import React from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -10,10 +9,13 @@ import Lookup from "@/data/Lookup";
 import { Button } from "@/components/ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { UserDetailContext } from "@/context/UserDetailContext";
+import { UserDetail, UserDetailContext } from "@/context/UserDetailContext";
 import { useMutation } from "convex/react";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../convex/_generated/api";
+import { Doc } from "../../convex/_generated/dataModel";
+
+type User = Doc<"users">;
 
 const SignInDialog = ({
   openDialog,
@@ -37,14 +39,21 @@ const SignInDialog = ({
         name: userInfo?.data?.name,
         picture: userInfo?.data?.picture,
         uid: uuidv4(),
-      });
-      console.log("user", user);
+      }) as User;
+
+      console.log("user after createUser", user);
 
       if (typeof window !== undefined) {
         localStorage.setItem("user", JSON.stringify(user));
       }
 
-      setUserDetail(user);
+      setUserDetail({
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+        uid: user.uid,
+        _id: user._id,
+      });
 
       closeDialog();
     },
@@ -67,7 +76,7 @@ const SignInDialog = ({
             </p>
 
             <Button
-              onClick={googleLogin}
+              onClick={() => googleLogin()}
               className='mt-3 bg-blue-500 text-white hover:bg-blue-400'
             >
               Sign In with Google
