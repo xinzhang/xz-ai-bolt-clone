@@ -1,6 +1,6 @@
 "use client";
 
-import { useConvex } from "convex/react";
+import { useConvex, useMutation } from "convex/react";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect } from "react";
 import { api } from "../../convex/_generated/api";
@@ -9,10 +9,11 @@ import { UserDetailContext } from "@/context/UserDetailContext";
 import Colors from "@/data/Colors";
 import Image from "next/image";
 import Lookup from "@/data/Lookup";
-import { ArrowRight, Link } from "lucide-react";
+import { ArrowRight, Link, Loader2Icon } from "lucide-react";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
-import { Id } from "../../convex/_generated/dataModel"; 
+import { Id } from "../../convex/_generated/dataModel";
+import Markdown from "react-markdown";
 
 const ChatView = () => {
   const params = useParams();
@@ -21,6 +22,8 @@ const ChatView = () => {
   const { messages, setMessages } = useContext(MessagesContext);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [userInput, setUserInput] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const UpdateMessages = useMutation(api.workspace.UpdateMessages);
 
   useEffect(() => {
     if (id) {
@@ -37,9 +40,8 @@ const ChatView = () => {
     }
   }, [messages]);
 
-
   const GetWorkspaceData = async () => {
-    if (!id) return; 
+    if (!id) return;
 
     const result = await convex.query(api.workspace.GetWorkspace, {
       workspaceId: id,
@@ -48,34 +50,47 @@ const ChatView = () => {
   };
 
   const getAiResponse = async () => {
-    const prompt = [...messages, {
+    setLoading(true);
+    const prompt = [
+      ...messages,
+      {
         role: "system",
         content: Prompt.CHAT_PROMPT,
-      }];
-      
+      },
+    ];
+
     const result = await axios.post("/api/ai-chat", {
       prompt: prompt,
     });
-    console.log("AI Response:", result.data.result);
-  }
+    const aiResponse = {
+      role: "ai",
+      content: result.data.result,
+    }
+    setMessages((prev) => [...prev, aiResponse]);
+    await UpdateMessages({
+      workspaceId: id,
+      messages: [...messages, aiResponse]
+    });
+    setLoading(false);
+  };
 
   const onGenerate = async (input: string) => {
     const msg = {
-      role: 'user',
+      role: "user",
       content: input,
-    }
+    };
 
-    setMessages([msg])
-    getAiResponse();    
-  }
+    setMessages((prev) => [...prev,msg]);
+    setUserInput("");
+  };
 
   return (
     <div className='relative h-[85vh] flex flex-col kk'>
-      <div className="flex-1 overflow-y-scroll px-5 py-2">
+      <div className='flex-1 overflow-y-scroll px-5 py-2'>
         {messages?.map((message, index) => (
           <div
             key={index}
-            className='p-3 rounded-lg mb-2 flex gap-2 items-start'
+            className='p-3 rounded-lg mb-2 flex gap-2 items-center justify-start leading-7'
             style={{
               backgroundColor: Colors.CHAT_BACKGROUND,
             }}
@@ -89,10 +104,16 @@ const ChatView = () => {
                 className='rounded-full'
               />
             )}
-            <h2>{message.content}</h2>
+            <Markdown>{message.content}</Markdown>
           </div>
         ))}
       </div>
+      {loading && (
+        <div className='flex gap-2 items-center p-3 rounded-lg mb-2'>
+          <Loader2Icon className='w-4 h-4 animate-spin' />
+          <h2>Thinking...</h2>
+        </div>
+      )}
 
       {/* input section */}
       <div
@@ -107,12 +128,13 @@ const ChatView = () => {
             placeholder={Lookup.INPUT_PLACEHOLDER}
           />
           {userInput && (
-            <ArrowRight 
+            <ArrowRight
               onClick={() => {
                 onGenerate(userInput);
                 setUserInput("");
               }}
-              className='bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer' />
+              className='bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer'
+            />
           )}
         </div>
         <div>
