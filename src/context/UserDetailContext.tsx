@@ -8,4 +8,4 @@ export interface UserDetail {
   picture?: string;
 }
 
-export const UserDetailContext = React.createContext<UserDetail>({} as UserDetail);
+export const UserDetailContext = React.createContext<UserDetail | null>(null);
