@@ -104,7 +104,7 @@ const ChatView = () => {
                 className='rounded-full'
               />
             )}
-            <Markdown>{message.content}</Markdown>
+            <h2>{message.content}</h2>
           </div>
         ))}
       </div>

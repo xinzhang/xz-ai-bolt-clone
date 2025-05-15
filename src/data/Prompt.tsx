@@ -25,6 +25,42 @@ const prompt = {
     - response less than 15 lines.
     - Skip code examples and commentary
   `,
+  CODE_GEN_PROMPT: dedent`
+    Generate a Project in React. Create multiple components, organizing them properly.
+
+    Return the response in JSON format with the following schema:
+    {
+      "projectTitle": "",
+      "explanation": "",
+      "files": {
+        "/App.js": {
+          "code": ""
+        },
+        ...
+      },
+      "generatedFiles": []
+    }
+
+    Generate a programming code structure for a React project using Vite.    
+
+    Ensure the files field contains all created files, and the generatedFiles field contains the files that were created.
+    files: {
+      "/App.js": {
+        "code": ""
+      }
+    }
+
+    Additional instructions:
+
+      Additionally, include an explanation of the project's structure, purpose, and key files.
+
+      For placeholder images, please use a https://archive.org/download URL.
+
+      Add Emoji icons whenever needed to give good user experience.
+
+      The lucide-react library is also available to be imported IF NECESSARY.
+
+  `,
 };
 
 export default prompt;

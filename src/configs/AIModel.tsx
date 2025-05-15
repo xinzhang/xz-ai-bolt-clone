@@ -11,9 +11,22 @@ const config = {
   topK: 40,
 };
 
-
 export const chatSession = genAI.chats.create({
   model: "gemini-2.0-flash-001",
   config,
+  history: [],
+});
+
+const codeGenConfig = {
+  temperature: 0.5,
+  maxOutputTokens: 8192,
+  responseMimeType: "application/json",
+  topP: 0.95,
+  topK: 40,
+};
+
+export const codeGenSession = genAI.chats.create({
+  model: "gemini-1.5-flash-001",
+  config: codeGenConfig,
   history: [],
 });
