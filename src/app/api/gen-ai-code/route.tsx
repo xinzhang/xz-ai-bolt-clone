@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     });
 
     // this is using json response for chat
-    const response = JSON.parse(result.text);
+    const response = JSON.parse(result.text || "{}");
     return NextResponse.json(response);
 
   } catch (e) {
