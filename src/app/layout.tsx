@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import ConvexClientProvider from "./ConvexClientProvider";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/AppSidebar";
 
 export const metadata: Metadata = {
   title: "Bolt.new Clone",
@@ -19,10 +21,14 @@ export default function RootLayout({
       <body>
         <ConvexClientProvider>
           <Provider>
-            <div className='min-h-screen bg-background text-foreground antialiased'>
-              <Header />
-              {children}
-            </div>
+            <SidebarProvider defaultOpen={false}>
+              <div className='w-full'>
+                <Header />
+
+                <AppSidebar />
+                {children}
+              </div>
+            </SidebarProvider>
           </Provider>
         </ConvexClientProvider>
       </body>

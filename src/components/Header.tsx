@@ -1,25 +1,53 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import React, { useContext } from 'react'
-import { Button } from './ui/button'
-import Colors from '@/data/Colors'
+import Image from "next/image";
+import React, { useContext, useState } from "react";
+import { Button } from "./ui/button";
+import Colors from "@/data/Colors";
 import { UserDetailContext } from "@/context/UserDetailContext";
-import Link from 'next/link'
-
+import Link from "next/link";
+import SignInDialog from "./SignInDialog";
+import { useSidebar } from "./ui/sidebar";
 const Header = () => {
-  const { userDetail, setUserDetail} = useContext(UserDetailContext);
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const [openDialog, setOpenDialog] = useState(false);
+  const { toggleSidebar } = useSidebar();
   return (
     <div className='p-4 flex justify-between items-center'>
-      <Link href="/"> <Image src="/logo.png" alt="Logo" width={40} height={40} /> </Link>
-      {!userDetail && <div className="flex gap-5">
-        <Button variant="ghost">Sign In</Button>
-        <Button className="text-white" style={{
-          backgroundColor: Colors.BLUE
-        }}>Get Started</Button>
-      </div>}
-    </div>
-  )
-}
+      <Image
+        className='cursor-pointer'
+        onClick={() => toggleSidebar()}
+        src='/logo.png'
+        alt='Logo'
+        width={40}
+        height={40}
+      />
 
-export default Header
+      {!userDetail && (
+        <div className='flex gap-5'>
+          <Button
+            className='cursor-pointer'
+            variant='ghost'
+            onClick={() => setOpenDialog(true)}
+          >
+            Sign In
+          </Button>
+          <Button
+            className='text-white'
+            style={{
+              backgroundColor: Colors.BLUE,
+            }}
+          >
+            Get Started
+          </Button>
+          <SignInDialog
+            openDialog={openDialog}
+            closeDialog={() => setOpenDialog(false)}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Header;

@@ -42,7 +42,7 @@ const Hero = () => {
   }
 
   return (
-    <div className='flex flex-col items-center gap-2 mt-36 lg:mt-52'>
+    <div className='flex flex-col items-center gap-2'>
       <h2 className='font-bold text-2xl text-gray-100'>
         {Lookup.HERO_HEADING}
       </h2>
