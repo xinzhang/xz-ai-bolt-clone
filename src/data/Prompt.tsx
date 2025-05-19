@@ -41,7 +41,8 @@ const prompt = {
       "generatedFiles": []
     }
 
-    Generate a programming code structure for a React project using Vite.    
+    Generate a programming code structure for a React project using Vite.
+    and all the generated code does not need a src folder should just use the root folder as base   
 
     Ensure the files field contains all created files, and the generatedFiles field contains the files that were created.
     files: {
