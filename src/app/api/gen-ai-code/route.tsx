@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
       message: JSON.stringify(prompt),
     });
 
-    fs.writeFileSync('./temp.json', result.text || "{}", 'utf-8');
     console.log(result.text);
 
     // this is using json response for chat
