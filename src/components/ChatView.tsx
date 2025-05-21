@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import React, { useContext, useEffect } from "react";
 import { api } from "../../convex/_generated/api";
 import { MessagesContext } from "@/context/MessagesContext";
-import { UserDetailContext } from "@/context/UserDetailContext";
+import { UserDetail, UserDetailContext } from "@/context/UserDetailContext";
 import Colors from "@/data/Colors";
 import Image from "next/image";
 import Lookup from "@/data/Lookup";
@@ -15,6 +15,11 @@ import Prompt from "@/data/Prompt";
 import { Id } from "../../convex/_generated/dataModel";
 import Markdown from "react-markdown";
 import { useSidebar } from "./ui/sidebar";
+
+export const countTokens = (inputText: string) => {
+  return inputText.trim().split(/\s+/).filter(word => word).length;
+};
+
 const ChatView = () => {
   const params = useParams();
   const id = params.id as Id<"workspace">;
@@ -25,6 +30,7 @@ const ChatView = () => {
   const [loading, setLoading] = React.useState(false);
   const UpdateMessages = useMutation(api.workspace.UpdateMessages);
   const { toggleSidebar } = useSidebar();
+  const UpdateTokens = useMutation(api.users.UpdateTokens)
 
   useEffect(() => {
     if (id) {
@@ -67,11 +73,23 @@ const ChatView = () => {
       role: "ai",
       content: result.data.result,
     };
+
     setMessages((prev) => [...prev, aiResponse]);
     await UpdateMessages({
       workspaceId: id,
       messages: [...messages, aiResponse],
     });
+
+    const tokenCount = countTokens(aiResponse.content);
+    if (userDetail && userDetail?._id) {
+      const newToken = userDetail.token - tokenCount;
+      setUserDetail((prev) => ({ ...prev, token: newToken} as UserDetail));
+
+      await UpdateTokens({
+        userId: userDetail?._id,
+        token: userDetail?.token - tokenCount,
+      });
+    }
     setLoading(false);
   };
 

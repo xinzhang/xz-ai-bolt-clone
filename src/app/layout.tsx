@@ -7,7 +7,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
 
 export const metadata: Metadata = {
-  title: "Bolt.new Clone",
+  title: "Bolt.clone",
   description: "To show how to build a clone of Bolt.new",
 };
 

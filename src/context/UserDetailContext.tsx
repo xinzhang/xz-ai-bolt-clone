@@ -9,6 +9,7 @@ export interface UserDetail {
   name?: string;
   picture?: string;
   uid?: string;
+  token: number;
 }
 
 interface UserDetailContextType {

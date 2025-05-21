@@ -53,6 +53,7 @@ const SignInDialog = ({
         picture: user.picture,
         uid: user.uid,
         _id: user._id,
+        token: user.token || 50000,
       });
 
       closeDialog();

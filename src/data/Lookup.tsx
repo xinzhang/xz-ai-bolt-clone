@@ -1,5 +1,5 @@
 const Lookup = {
-  SUGGESTIONS: ["Create TODO App in React", "Create Budget Track App"],
+  SUGGESTIONS: ["Create TODO App in React", "Create Budget Track App", "Create a simple calculator", "create a sign in sign up page in react", "create a gym management dashboard"],
   HERO_HEADING: "What do you want to build?",
   HERO_DESC: "Prompt, run, edit, and deploy full-stack web apps.",
   SIGNIN_HEADING: "Continue With Bolt.New 2.0",
