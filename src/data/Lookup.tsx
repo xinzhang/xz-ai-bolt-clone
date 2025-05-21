@@ -46,6 +46,30 @@ const Lookup = {
               </html>`,
     },
   },
+  PRICING_DESC: 'Start with a free account to speed up your workflow on ...',
+  PRICING_OPTIONS: [
+    {
+      name: 'Free',
+      tokens: '50K',
+      value: 50000,
+      desc: 'Ideal for hobbists and casual users for light, exploratory use',
+      price: 4.99
+    },
+    {
+      name: 'Starter',
+      tokens: '120K',
+      value: 1200000,
+      desc: 'Designed for professionals who need to use Bolt a few times a day',
+      price: 9.99
+    },
+    {
+      name: 'Pro',
+      tokens: 'Unlimited',
+      value: 10000000,
+      desc: 'Designed for enterprise users who need to use Bolt all the time to build their products',
+      price: 29.99
+    }
+  ]
 };
 
 export default Lookup;

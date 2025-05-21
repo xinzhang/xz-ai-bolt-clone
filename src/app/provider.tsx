@@ -7,7 +7,7 @@ import { UserDetailContext } from "@/context/UserDetailContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useConvex } from "convex/react";
 import { api } from "../../convex/_generated/api";
-
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 export function Provider({ children } : { children: React.ReactNode }) {
   const [messages, setMessages] = React.useState<Message[]>([]);
@@ -40,7 +40,9 @@ export function Provider({ children } : { children: React.ReactNode }) {
       <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
         <MessagesContext.Provider value={{ messages, setMessages }}>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-            {children}
+            <PayPalScriptProvider options={{clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ''}}>
+              {children}
+            </PayPalScriptProvider>
           </ThemeProvider>
         </MessagesContext.Provider>
       </UserDetailContext.Provider>

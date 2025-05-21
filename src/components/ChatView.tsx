@@ -15,6 +15,7 @@ import Prompt from "@/data/Prompt";
 import { Id } from "../../convex/_generated/dataModel";
 import Markdown from "react-markdown";
 import { useSidebar } from "./ui/sidebar";
+import { toast } from "sonner";
 
 export const countTokens = (inputText: string) => {
   return inputText.trim().split(/\s+/).filter(word => word).length;
@@ -94,6 +95,12 @@ const ChatView = () => {
   };
 
   const onGenerate = async (input: string) => {
+    if (!userDetail) return;
+    if (userDetail.token < 10) {
+      toast.error("You don't have enough tokens");
+      return;
+    }
+
     const msg = {
       role: "user",
       content: input,

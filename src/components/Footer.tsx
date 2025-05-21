@@ -47,6 +47,9 @@ const Footer = () => {
           if (item.name === "Sign out") {
             signOut();
           }
+          if (item.name === "Subscription") {
+            router.push("/pricing");
+          }
         }}
           className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-white" key={item.name}>
           <item.icon className="w-4 h-4" />

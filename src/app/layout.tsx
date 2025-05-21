@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import ConvexClientProvider from "./ConvexClientProvider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Bolt.clone",
@@ -24,9 +25,9 @@ export default function RootLayout({
             <SidebarProvider defaultOpen={false}>
               <div className='w-full'>
                 <Header />
-
                 <AppSidebar />
                 {children}
+                <Toaster />
               </div>
             </SidebarProvider>
           </Provider>
