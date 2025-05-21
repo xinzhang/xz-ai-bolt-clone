@@ -48,6 +48,7 @@ const PricingModel = () => {
               disabled={!userDetail}
               style={{
                 layout: 'horizontal',
+                tagline: false,
               }}
               onApprove={() => onPaymentSuccess(Number(item.tokens || 0))}
               onCancel={() => onPaymentCancel()}

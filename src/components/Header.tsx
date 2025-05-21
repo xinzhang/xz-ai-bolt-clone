@@ -8,10 +8,19 @@ import { UserDetailContext } from "@/context/UserDetailContext";
 import Link from "next/link";
 import SignInDialog from "./SignInDialog";
 import { useSidebar } from "./ui/sidebar";
+import { usePathname } from "next/navigation";
+import { LucideDownload, Rocket } from "lucide-react";
+
 const Header = () => {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [openDialog, setOpenDialog] = useState(false);
   const { toggleSidebar } = useSidebar();
+  const path = usePathname();
+
+  const onExport = () => {
+
+  }
+  
   return (
     <div className='p-4 flex justify-between items-center'>
       <Image
@@ -44,6 +53,19 @@ const Header = () => {
             openDialog={openDialog}
             closeDialog={() => setOpenDialog(false)}
           />
+        </div>
+      )}
+
+      {path?.includes('workspace') && (
+        <div className="flex gap-2 items-center">
+          <Button variant='ghost' className="cursor-pointer" onClick={() => onExport()}>
+            <LucideDownload className="w-4 h-4" />
+             Export
+          </Button>
+          <Button variant='ghost' className="cursor-pointer">
+            <Rocket className="w-4 h-4" />
+             Deploy
+          </Button>
         </div>
       )}
     </div>

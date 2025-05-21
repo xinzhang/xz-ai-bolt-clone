@@ -17,6 +17,7 @@ import { api } from "../../convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Id } from "../../convex/_generated/dataModel";
 import { Loader2Icon } from "lucide-react";
+import SandpackPreviewClient from "./SandpackPreviewClient";
 
 const CodeView = () => {
   const params = useParams();
@@ -121,10 +122,7 @@ const CodeView = () => {
           )}
           {activeTab === "preview" && (
             <>
-              <SandpackPreview
-                showNavigator
-                style={{ height: "80vh", width: "100%" }}
-              />
+              <SandpackPreviewClient />
             </>
           )}
         </SandpackLayout>
