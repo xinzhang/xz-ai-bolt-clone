@@ -20,7 +20,6 @@ const SandpackPreviewClient = () => {
     const clientId = previewRef.current?.clientId;
     
     if (client && clientId) {
-      console.log(client);
       //return await client.getCodeSandboxURL();
     }
 

@@ -11,11 +11,11 @@ const Lookup = {
     description:
       "A basic ToDo App in React with Tailwind CSS, styled-components",
     generatedFiles: [
-      "/App.js",
+      "/src/App.js",
       "/components/TodoList.js",
       "/components/TodoForm.js",
       "/components/TodoItem.js",
-      "/index.css",
+      "/src/index.css",
     ],
   },
   DEPENDANCY: {
