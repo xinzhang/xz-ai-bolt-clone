@@ -42,11 +42,14 @@ const prompt = {
     }
 
     Generate a programming code structure for a React project using Vite.
-    and all the generated code does not need a src folder should just use the root folder as base   
+    the vite should also include tailwind css
+    and all the generated code does not need a src folder should just use the root folder as base
 
     Ensure the files field contains all created files, and the generatedFiles field contains the files that were created.
     For some components, you can use a component folder or else put all the app.js, index.js as the entry to the root folder
     and you can also override the files field with the files you want to use
+
+    the components should use tailwind css for styling
 
     files: {
       "/App.js": {
